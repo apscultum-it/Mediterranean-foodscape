@@ -260,24 +260,24 @@ const DIMS=[
   {k:'heritage',l:'Heritage',c:'var(--brown)'},
   {k:'story',l:'Territory story',c:'var(--blue)'},
 ];
-const COURSES=['Antipasto','Primo','Secondo','Contorno','Dolce','Bevanda'];
+const COURSES=['Appetizer','Main dish','Main dish 2','Side dish','Dessert','Beverage'];
 const D=(id,n,st,cost,v,extra={})=>({id,n,st,cost,...v,...extra});
 const DECK={
-  Antipasto:[
+  Appetizer:[
     D('a1','Marinated Local Anchovies','Spring alici, cured the way the coast always has.',4,{season:5,local:5,sea:4,lowwaste:4,nutrition:4,heritage:5,story:5},{kw:'anchovies,seafood',lock:101}),
     D('a2','Burrata & Sun-dried Tomatoes','Stracciatella from the next valley over.',6,{season:3,local:5,sea:null,lowwaste:3,nutrition:3,heritage:5,story:5},{kw:'burrata,cheese',lock:102,tags:['veg']}),
     D('a3','Imported Smoked Salmon','Flown in, farmed far away — but it sells.',9,{season:2,local:0,sea:1,lowwaste:3,nutrition:4,heritage:1,story:1},{kw:'smoked,salmon',lock:103}),
     D('a4','Quinoa & Avocado Bowl','On-trend superfoods from three continents.',7,{season:2,local:0,sea:null,lowwaste:3,nutrition:5,heritage:0,story:0},{kw:'quinoa,avocado',lock:104,tags:['veg']}),
     D('a5','Fried Panzerotti','Street-corner classic, hot and irresistible.',3,{season:3,local:4,sea:null,lowwaste:3,nutrition:2,heritage:5,story:5},{kw:'panzerotti,fried',lock:105,tags:['kids'],col:'#d99a3a'}),
   ],
-  Primo:[
+  main dish:[
     D('p1','Orecchiette & Turnip Tops','Cime di rapa, the dish that defines this land.',3,{season:5,local:5,sea:null,lowwaste:5,nutrition:4,heritage:5,story:5},{kw:'orecchiette,pasta',lock:111,tags:['veg']}),
     D('p2','Fava Bean & Chicory Purée','Fave e cicorie — peasant food, ancient and proud.',2,{season:4,local:5,sea:null,lowwaste:5,nutrition:5,heritage:5,story:5},{kw:'fava,beans',lock:112,tags:['veg','soft']}),
     D('p3','Out-of-season Asparagus Risotto','Asparagus in November means a long, long journey.',7,{season:1,local:1,sea:null,lowwaste:3,nutrition:3,heritage:2,story:1},{kw:'asparagus,risotto',lock:113,tags:['veg','soft']}),
     D('p4','Lobster Linguine','Luxury on the plate, pressure on the budget.',12,{season:3,local:2,sea:2,lowwaste:2,nutrition:3,heritage:2,story:2},{kw:'lobster,pasta',lock:114}),
     D('p5','Tomato & Basil Spaghetti','Simple, sunny, and everyone clears the plate.',3,{season:3,local:4,sea:null,lowwaste:4,nutrition:3,heritage:4,story:3},{kw:'spaghetti,tomato',lock:115,tags:['veg','kids','soft']}),
   ],
-  Secondo:[
+  main dish:[
     D('s1','Grilled Mackerel','Sgombro: abundant, oily, gloriously underrated.',4,{season:4,local:4,sea:5,lowwaste:4,nutrition:5,heritage:3,story:4},{kw:'grilled,mackerel,fish',lock:121}),
     D('s2','Mussel & Chickpea Stew','Cozze e ceci — farmed mussels, low impact, big flavour.',3,{season:4,local:5,sea:4,lowwaste:5,nutrition:5,heritage:5,story:5},{kw:'mussels,seafood',lock:122,tags:['soft']}),
     D('s3','Bluefin Tuna Steak','A crowd-pleaser pulled from a strained fishery.',11,{season:3,local:3,sea:1,lowwaste:3,nutrition:4,heritage:3,story:3},{kw:'tuna,steak',lock:123}),
@@ -292,14 +292,14 @@ const DECK={
     D('c4','Rice-stuffed Tomatoes','Pomodori col riso, baked till they slump.',3,{season:4,local:4,sea:null,lowwaste:4,nutrition:3,heritage:4,story:4},{kw:'stuffed,tomatoes',lock:134,tags:['veg','soft'],col:'#c0392b'}),
     D('c5','Out-of-season Greenhouse Salad','Pale lettuce trucked in under heated glass.',4,{season:1,local:2,sea:null,lowwaste:3,nutrition:3,heritage:1,story:1},{kw:'green,salad',lock:135,tags:['veg'],col:'#7a8137'}),
   ],
-  Dolce:[
+  dessert:[
     D('d1','Seasonal Fruit with Vincotto','Surplus fruit, grape-must syrup, zero waste.',2,{season:5,local:5,sea:null,lowwaste:5,nutrition:4,heritage:5,story:5},{kw:'fresh,fruit,dessert',lock:141,tags:['veg','soft']}),
     D('d2','Fig & Almond Cake','Late-summer figs and orchard almonds.',3,{season:4,local:5,sea:null,lowwaste:4,nutrition:2,heritage:5,story:5},{kw:'fig,cake',lock:142,tags:['veg']}),
     D('d3','Out-of-season Strawberries & Cream','Heated greenhouses, pale fruit, big footprint.',6,{season:1,local:1,sea:null,lowwaste:2,nutrition:2,heritage:2,story:1},{kw:'strawberries,cream',lock:143,tags:['veg','soft']}),
     D('d4','Imported Mango Cheesecake','Tropical and tempting, from very far away.',7,{season:1,local:0,sea:null,lowwaste:2,nutrition:1,heritage:0,story:0},{kw:'cheesecake',lock:144,tags:['veg','kids','soft']}),
     D('d5','Almond Pasticciotto','The pastry every nonna argues she makes best.',3,{season:3,local:4,sea:null,lowwaste:3,nutrition:2,heritage:5,story:5},{kw:'pastry,custard',lock:145,tags:['kids','soft'],col:'#caa05a'}),
   ],
-  Bevanda:[
+  beverage:[
     D('b1','Local Primitivo Wine','A glass of the hills, poured with pride.',4,{season:3,local:5,sea:null,lowwaste:4,nutrition:1,heritage:5,story:5},{kw:'red,wine,glass',lock:151,tags:['adult'],drink:true,col:'#7a1f3a'}),
     D('b2','Tap Water with Lemon','Free, local, and quietly the right choice.',0,{season:4,local:5,sea:null,lowwaste:5,nutrition:3,heritage:2,story:2},{kw:'water,lemon,glass',lock:152,tags:['veg','kids','soft'],drink:true,col:'#cfe6ea'}),
     D('b3','Imported Cola','Fizzy, familiar, and shipped halfway round the world.',3,{season:3,local:0,sea:null,lowwaste:2,nutrition:0,heritage:0,story:0},{kw:'cola,soda,glass',lock:153,tags:['kids'],drink:true,col:'#3a2418'}),
@@ -330,7 +330,7 @@ const BRIEFS={
     briefing:'Tonight the menu is an argument. Delegates, journalists and a few sceptical ministers will eat what you serve and then debate whether a sustainable food system can scale. A vegan delegation has confirmed. The story of the plate matters as much as the plate.',
     budget:32,vision:'equitable',
     weights:{season:1.2,local:1.3,sea:1,lowwaste:1.8,nutrition:1.4,afford:1.2,heritage:1,story:1.4},
-    kw:'banquet,dinner,table',lock:203,rules:{need:{tag:'veg',course:'Secondo',label:'a plant-based main course'}}},
+    kw:'banquet,dinner,table',lock:203,rules:{need:{tag:'veg',course:'main dish',label:'a plant-based main course'}}},
   agri:{src:'GourmetPast',n:'The Agriturismo Harvest',place:'A farm-stay dinner among the olive groves',
     desc:'City guests want "authentic." You have your own fields, your own surplus, and a story to tell.',
     briefing:'Your guests drove out of the city to eat something real. Almost everything you need grows within sight of the table — so anything imported will stick out, and any surplus from the harvest left to rot is money and meaning lost. Tell them where every dish comes from.',
