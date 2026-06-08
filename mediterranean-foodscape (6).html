@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mediterranean Foodscape — Save the Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500;1,9..144,600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3ead6; --paper-2:#ece0c5; --card:#fbf5e6;
+    --ink:#2b2117; --ink-soft:#5c4f3d;
+    --teal:#0f5560; --teal-2:#1c7686;
+    --terra:#b5462e; --olive:#6c7330; --gold:#cc8a1f;
+    --green:#4f7a3f; --magenta:#b81e63; --brown:#8a5a2b; --blue:#235b8c;
+    --line:#cbb487; --shadow:rgba(43,33,23,.2);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper);color:var(--ink);font-family:'Spectral',Georgia,serif;line-height:1.5;
+    background-image:repeating-radial-gradient(circle at 22% 18%,transparent 0 40px,rgba(138,90,43,.04) 40px 41px),repeating-radial-gradient(circle at 80% 70%,transparent 0 54px,rgba(15,85,96,.035) 54px 55px);min-height:100vh;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 18px 70px;}
+  @keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+  .up{animation:up .5s both;}
+
+  /* photo + svg fallback */
+  .ph{position:relative;overflow:hidden;background:radial-gradient(circle at 50% 42%,#fff 0%,var(--paper-2) 100%);}
+  .ph svg{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(2px 3px 2px rgba(43,33,23,.14));}
+  .ph img.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .45s;}
+  .ph img.photo.ok{opacity:1;animation:pop .4s both;}
+
+  /* HERO */
+  .hero{position:relative;margin:0 -18px 22px;overflow:hidden;border-bottom:4px double var(--ink);height:clamp(190px,34vw,330px);}
+  .hero .ph{position:absolute;inset:0;}
+  .hero .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,85,96,.15) 0%,rgba(43,33,23,.62) 100%);}
+  .hero-text{position:absolute;left:0;right:0;bottom:0;text-align:center;padding:0 16px 18px;}
+  .kicker{font-family:'Fraunces',serif;font-weight:600;font-size:.7rem;letter-spacing:.4em;text-transform:uppercase;color:#fbf5e6;margin:0 0 2px;text-shadow:0 1px 4px rgba(0,0,0,.6);}
+  h1.title{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(2.1rem,7vw,4.4rem);line-height:.9;margin:0;color:#fbf5e6;text-shadow:0 2px 14px rgba(0,0,0,.6);letter-spacing:-.01em;}
+  h1.title em{font-style:italic;font-weight:500;color:#ffd98a;}
+  .subtitle{font-style:italic;color:#f6efde;margin:6px 0 0;font-size:clamp(.85rem,2.4vw,1.05rem);text-shadow:0 1px 6px rgba(0,0,0,.7);}
+
+  /* career ribbon */
+  .career{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;background:var(--ink);color:#f3ead6;font-family:'Fraunces',serif;font-size:.82rem;padding:7px 16px;margin:0 -18px 22px;letter-spacing:.04em;}
+  .career b{color:#ffd98a;}
+
+  button{font-family:'Fraunces',serif;cursor:pointer;border:none;}
+  .btn{background:var(--magenta);color:#fff;font-weight:600;font-size:1rem;padding:13px 30px;border-radius:2px;box-shadow:3px 3px 0 var(--ink);transition:transform .12s,box-shadow .12s;}
+  .btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink);}
+  .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);}
+  .btn:disabled{background:var(--paper-2);color:#a8957a;box-shadow:none;cursor:not-allowed;border:1px solid var(--line);}
+  .btn.ghost{background:transparent;color:var(--ink);box-shadow:none;text-decoration:underline;padding:9px 12px;font-size:.92rem;}
+  .btn.sm{padding:9px 18px;font-size:.9rem;}
+
+  .intro-card{background:var(--card);border:1px solid var(--line);padding:26px 30px;max-width:820px;margin:0 auto;box-shadow:7px 7px 0 var(--shadow);}
+  .intro-card p{font-size:1.05rem;}
+  .horizons{display:flex;gap:14px;margin:20px 0;flex-wrap:wrap;}
+  .horizon{flex:1;min-width:150px;border-left:3px solid var(--teal);padding:4px 0 4px 12px;}
+  .horizon b{font-family:'Fraunces',serif;display:block;color:var(--teal);}
+  .horizon span{font-size:.9rem;color:var(--ink-soft);}
+  .dimgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:14px 0 4px;}
+  .dimtag{display:flex;align-items:center;gap:7px;font-size:.86rem;font-family:'Fraunces',serif;}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px;}
+  .center{text-align:center;} .hl{color:var(--magenta);}
+
+  .sec-head{font-family:'Fraunces',serif;font-weight:900;font-size:1.7rem;margin:0 0 2px;}
+  .sec-sub{color:var(--ink-soft);font-style:italic;margin:0 0 18px;}
+
+  /* scenario cards */
+  .brief-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
+  .brief{background:var(--card);border:1px solid var(--line);cursor:pointer;transition:transform .14s,box-shadow .14s;overflow:hidden;box-shadow:5px 5px 0 var(--shadow);display:flex;flex-direction:column;}
+  .brief:hover{transform:translateY(-4px);box-shadow:7px 9px 0 var(--shadow);}
+  .brief .ph{height:150px;}
+  .brief .body{padding:15px 18px 18px;display:flex;flex-direction:column;flex:1;}
+  .brief .src{font-family:'Fraunces',serif;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:#fff;background:var(--ink);display:inline-block;padding:3px 8px;align-self:flex-start;}
+  .brief h3{font-family:'Fraunces',serif;font-size:1.4rem;margin:10px 0 3px;line-height:1.03;}
+  .brief .place{font-style:italic;color:var(--teal);margin:0 0 9px;font-size:.92rem;}
+  .brief p{font-size:.92rem;margin:0 0 13px;color:var(--ink-soft);flex:1;}
+  .brief .meta{font-size:.78rem;display:flex;justify-content:space-between;border-top:1px dotted var(--line);padding-top:9px;font-family:'Fraunces',serif;}
+
+  .build-top{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin:16px 0 6px;}
+  .briefing{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--terra);padding:14px 18px;margin-bottom:16px;font-size:.95rem;}
+  .briefing b{font-family:'Fraunces',serif;}
+  .rules{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+  .rule{font-family:'Fraunces',serif;font-size:.74rem;background:var(--paper-2);border:1px solid var(--line);padding:4px 10px;border-radius:14px;}
+  .vlabel{font-family:'Fraunces',serif;font-weight:600;font-size:.95rem;}
+  .vision-pick{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 22px;}
+  .vchip{border:1px solid var(--line);background:var(--card);padding:8px 14px;border-radius:20px;font-family:'Fraunces',serif;font-size:.84rem;cursor:pointer;transition:.12s;}
+  .vchip:hover{border-color:var(--teal);}
+  .vchip.on{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:2px 2px 0 var(--ink);}
+
+  .layout{display:grid;grid-template-columns:1fr 318px;gap:26px;align-items:start;}
+  @media(max-width:920px){.layout{grid-template-columns:1fr;}}
+  .course{margin-bottom:22px;}
+  .course-label{font-family:'Fraunces',serif;font-weight:600;text-transform:uppercase;letter-spacing:.18em;font-size:.78rem;color:var(--terra);border-bottom:1px solid var(--line);padding-bottom:4px;margin-bottom:12px;}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:13px;}
+  .dish{background:var(--card);border:1px solid var(--line);padding:0 0 12px;cursor:pointer;transition:.12s;position:relative;display:flex;flex-direction:column;overflow:hidden;}
+  .dish:hover{border-color:var(--ink);transform:translateY(-3px);box-shadow:4px 4px 0 var(--shadow);}
+  .dish.sel{border:2px solid var(--magenta);box-shadow:4px 4px 0 var(--magenta);}
+  .dish .ph{height:132px;border-bottom:1px solid var(--line);}
+  .tags{position:absolute;top:8px;left:8px;display:flex;gap:4px;z-index:2;}
+  .tag{font-family:'Fraunces',serif;font-size:.6rem;font-weight:600;padding:2px 7px;border-radius:10px;color:#fff;letter-spacing:.04em;box-shadow:1px 1px 0 rgba(0,0,0,.2);}
+  .t-veg{background:var(--green);} .t-kids{background:var(--gold);} .t-soft{background:var(--blue);} .t-adult{background:#7a3b6a;}
+  .dish .pad{padding:0 12px;}
+  .dish .dn{font-family:'Fraunces',serif;font-weight:600;font-size:.96rem;margin:9px 0 2px;line-height:1.07;}
+  .dish .story{font-size:.76rem;color:var(--ink-soft);font-style:italic;margin:0 0 8px;flex:1;}
+  .dish .cost{font-family:'Fraunces',serif;font-weight:600;color:var(--teal);font-size:1.02rem;}
+  .pips{display:flex;gap:3px;margin-top:8px;}
+  .pip{flex:1;height:8px;border-radius:1px;background:var(--paper-2);position:relative;overflow:hidden;}
+  .pip i{position:absolute;left:0;bottom:0;width:100%;}
+  .sel-flag{position:absolute;top:8px;right:8px;background:var(--magenta);color:#fff;font-family:'Fraunces',serif;font-size:.62rem;font-weight:600;padding:3px 8px;border-radius:10px;box-shadow:1px 1px 0 var(--ink);z-index:3;}
+
+  .board{background:var(--card);border:1px solid var(--line);padding:18px;position:sticky;top:14px;box-shadow:5px 5px 0 var(--shadow);}
+  .board h4{font-family:'Fraunces',serif;margin:0 0 2px;font-size:1.15rem;}
+  .board .hint{font-size:.78rem;color:var(--ink-soft);margin:0 0 14px;font-style:italic;}
+  .budget{margin-bottom:16px;}
+  .budget-row{display:flex;justify-content:space-between;font-family:'Fraunces',serif;font-size:.85rem;margin-bottom:4px;}
+  .budbar{height:13px;background:var(--paper);border:1px solid var(--line);position:relative;overflow:hidden;}
+  .budbar i{display:block;height:100%;background:var(--green);transition:width .25s,background .25s;}
+  .budbar.over i{background:var(--terra);}
+  .meter{margin-bottom:9px;}
+  .meter-row{display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:2px;}
+  .meter-row b{font-family:'Fraunces',serif;font-weight:600;}
+  .bar{height:9px;background:var(--paper);border:1px solid var(--line);overflow:hidden;}
+  .bar i{display:block;height:100%;transition:width .3s;}
+  .total{text-align:center;border-top:2px solid var(--ink);margin-top:14px;padding-top:12px;}
+  .total .num{font-family:'Fraunces',serif;font-weight:900;font-size:2.8rem;line-height:1;}
+  .total .lbl{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);}
+
+  .result{max-width:840px;margin:0 auto;}
+  .verdict{text-align:center;background:var(--card);border:1px solid var(--line);box-shadow:7px 7px 0 var(--shadow);overflow:hidden;}
+  .verdict .ph{height:140px;}
+  .verdict .ph .shade{position:absolute;inset:0;}
+  .verdict .pad{padding:0 24px 24px;}
+  .verdict .big{font-family:'Fraunces',serif;font-weight:900;font-size:4.2rem;line-height:1;color:var(--magenta);margin-top:14px;}
+  .verdict .of{color:var(--ink-soft);font-size:1.1rem;}
+  .verdict .rank{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.6rem,5vw,2.5rem);line-height:1;margin:4px 0;}
+  .verdict .breakdown{font-size:.85rem;color:var(--ink-soft);margin-top:6px;}
+  .events{margin:18px 0;}
+  .event{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--teal);padding:13px 16px;margin-bottom:10px;animation:up .5s both;}
+  .event.bad{border-left-color:var(--terra);}
+  .event .ico{font-family:'Fraunces',serif;font-weight:900;font-size:1.1rem;width:34px;height:34px;flex:0 0 34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;background:var(--teal);}
+  .event.bad .ico{background:var(--terra);}
+  .event h6{font-family:'Fraunces',serif;margin:0 0 3px;font-size:1rem;}
+  .event p{margin:0;font-size:.88rem;}
+  .event .delta{font-family:'Fraunces',serif;font-weight:700;margin-left:auto;white-space:nowrap;}
+  .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+  @media(max-width:560px){.res-grid{grid-template-columns:1fr;}}
+  .res-block{background:var(--card);border:1px solid var(--line);padding:14px 16px;border-left:4px solid var(--teal);}
+  .res-block.weak{border-left-color:var(--terra);}
+  .res-block .pl{font-family:'Fraunces',serif;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terra);}
+  .res-block h5{font-family:'Fraunces',serif;font-size:1.12rem;margin:3px 0 6px;}
+  .res-block p{margin:0;font-size:.9rem;}
+  .menu-recap{background:var(--card);border:1px dashed var(--line);padding:8px 14px;margin:18px 0;}
+  .menu-recap div{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px dotted var(--line);}
+  .menu-recap div:last-child{border:none;}
+  .menu-recap .mini{width:46px;height:40px;flex:0 0 46px;border-radius:4px;overflow:hidden;}
+  .menu-recap .c{font-family:'Fraunces',serif;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);width:74px;flex:0 0 74px;}
+  .menu-recap .nm{flex:1;font-weight:500;font-size:.92rem;}
+  .menu-recap .pr{font-family:'Fraunces',serif;color:var(--teal);}
+  footer.fine{text-align:center;margin-top:34px;font-size:.76rem;color:var(--ink-soft);border-top:1px solid var(--line);padding-top:16px;}
+  footer.fine b{color:var(--terra);}
+  .credits{margin:12px auto 0;max-width:620px;text-align:left;}
+  .credits summary{cursor:pointer;font-family:'Fraunces',serif;color:var(--teal);}
+  .credits p,.credits li{font-size:.74rem;line-height:1.5;}
+  .credits code{background:var(--paper-2);padding:1px 5px;border-radius:3px;}
+  .credits ul{margin:8px 0 0;padding-left:18px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero" id="hero"></div>
+  <div id="career"></div>
+  <div id="app"></div>
+  <footer class="fine">
+    Built on the <b>Food Realities Foresight</b> method · 6 scenarios from <b>Our Food Our Future</b>, <b>AdriEATic</b> &amp; <b>GourmetPast</b> · a foresight bridge between <b>Cultum</b> and <b>Caso Geographics</b>.
+    <details class="credits"><summary>Image credits &amp; licensing</summary><div id="creditbox"></div></details>
+  </footer>
+</div>
+
+<script>
+/* ============ PHOTO + FALLBACK ============ */
+const IMG_DIR='images/';
+const IMG={
+  a1:'anchovies',a2:'burrata',a3:'smoked-salmon',a4:'quinoa-avocado',a5:'panzerotti',
+  p1:'orecchiette',p2:'fava-chicory',p3:'asparagus-risotto',p4:'lobster-linguine',p5:'tomato-spaghetti',
+  s1:'mackerel',s2:'mussel-chickpea',s3:'tuna-steak',s4:'lamb',s5:'beef-burger',s6:'vegetable-tian',
+  c1:'wild-greens',c2:'grilled-vegetables',c3:'fries',c4:'stuffed-tomatoes',c5:'greenhouse-salad',
+  d1:'fruit-vincotto',d2:'fig-cake',d3:'strawberries-cream',d4:'mango-cheesecake',d5:'pasticciotto',
+  b1:'primitivo-wine',b2:'water-lemon',b3:'cola',b4:'almond-milk',b5:'orange-juice',
+  blue:'blue-table',canteen:'canteen',feast:'feast',agri:'agriturismo',hospital:'care-kitchen',festival:'sagra',hero:'hero'
+};
+function imgSrc(key){ return IMG_DIR+(IMG[key]||key)+'.jpg'; }
+/* If you replace any illustration with a Creative-Commons photo, add its TASL credit here:
+   'anchovies.jpg':{title:'Salted anchovies',author:'A. Author',source:'Flickr',license:'CC BY 2.0',url:'https://...'} */
+const IMG_CREDITS={};
+function renderCredits(){
+  const box=document.getElementById('creditbox');if(!box)return;
+  const keys=Object.keys(IMG_CREDITS);
+  if(!keys.length){box.innerHTML='<p>All artwork in this build is original illustration, free to reuse. When you replace an image in <code>images/</code> with a Creative-Commons photo, list it here in TASL form — Title · Author · Source · Licence — as CC attribution requires.</p>';return;}
+  box.innerHTML='<ul>'+keys.map(k=>{const c=IMG_CREDITS[k];return `<li><code>${k}</code> — ${c.title} · ${c.author} · <a href="${c.url}" target="_blank" rel="noopener">${c.source}</a> · ${c.license}</li>`;}).join('')+'</ul>';
+}
+function photoBlock(key,svg,cls){
+  return `<div class="ph ${cls||''}">${svg||''}<img class="photo" loading="lazy" src="${imgSrc(key)}" onload="this.classList.add('ok')" onerror="this.remove()"></div>`;
+}
+/* ============ SCENE + HERO SVG (always-visible, zero network) ============ */
+const HERO_SVG=`<svg viewBox="0 0 900 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2d98a"/><stop offset="1" stop-color="#e8a85f"/></linearGradient><linearGradient id="seaG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c8190"/><stop offset="1" stop-color="#0f5560"/></linearGradient></defs><rect width="900" height="300" fill="url(#sky)"/><circle cx="700" cy="95" r="48" fill="#fbe6a3"/><path d="M0 150 Q150 110 320 145 T620 135 T900 150 V200 H0 Z" fill="#9a7b46" opacity=".55"/><path d="M0 165 Q200 135 430 165 T900 160 V210 H0 Z" fill="#6c7330" opacity=".75"/><rect y="178" width="900" height="122" fill="url(#seaG)"/><g stroke="#bfe2e3" stroke-width="2" opacity=".5" fill="none"><path d="M40 205 q14 -6 28 0 t28 0"/><path d="M380 210 q14 -6 28 0 t28 0"/><path d="M720 212 q14 -6 28 0 t28 0"/><path d="M120 250 q14 -6 28 0 t28 0"/></g><g transform="translate(250 168)"><path d="M-26 28 L26 28 L18 40 L-18 40 Z" fill="#2b2117"/><rect x="-1" y="-30" width="2.5" height="58" fill="#2b2117"/><path d="M2 -28 L26 24 L2 24 Z" fill="#fbf5e6"/><path d="M-2 -16 L-22 24 L-2 24 Z" fill="#e9d7a8"/></g></svg>`;
+const SCENE={
+  blue:`<svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="120" fill="#ead6a4"/><circle cx="240" cy="34" r="22" fill="#fbe09a"/><path d="M0 60 Q80 44 170 58 T300 56 V72 H0Z" fill="#b5462e" opacity=".6"/><rect y="66" width="300" height="54" fill="#2c8190"/><g stroke="#bfe2e3" stroke-width="2" fill="none" opacity=".55"><path d="M30 86 q12 -5 24 0 t24 0"/><path d="M240 84 q12 -5 24 0 t24 0"/></g><g transform="translate(90 58)"><path d="M-20 22 H20 L14 32 H-14Z" fill="#2b2117"/><rect x="-1" y="-22" width="2" height="44" fill="#2b2117"/><path d="M2 -20 L20 18 L2 18Z" fill="#fbf5e6"/></g></svg>`,
+  canteen:`<svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="120" fill="#ecd9a6"/><circle cx="250" cy="30" r="18" fill="#fbe09a"/><path d="M0 56 Q150 40 300 56 V120 H0Z" fill="#7a8137"/><path d="M0 70 Q150 56 300 70 V120 H0Z" fill="#6c7330"/><g stroke="#55602a" stroke-width="2" opacity=".6"><path d="M0 84 Q150 72 300 84"/><path d="M0 98 Q150 88 300 98"/></g><g transform="translate(54 38)"><rect x="0" y="0" width="34" height="26" fill="#e7d3a0"/><path d="M-4 0 L17 -14 L38 0Z" fill="#b5462e"/><rect x="12" y="12" width="9" height="14" fill="#8a5a2b"/></g><g transform="translate(210 44)"><rect x="-2" y="6" width="5" height="22" fill="#7a5a32"/><circle cx="0" cy="0" r="16" fill="#57632a"/><circle cx="-10" cy="6" r="9" fill="#6c7330"/><circle cx="11" cy="5" r="9" fill="#6c7330"/></g></svg>`,
+  feast:`<svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="120" fill="#efdcab"/><path d="M10 10 Q150 30 290 10" stroke="#8a5a2b" stroke-width="1.5" fill="none"/><g>${[20,55,90,125,160,195,230,265].map((x,i)=>`<path d="M${x} 14 l10 0 l-5 11 z" fill="${['#b5462e','#0f5560','#cc8a1f','#b81e63'][i%4]}"/>`).join('')}</g><rect x="20" y="74" width="260" height="14" fill="#caa86a"/><rect x="20" y="88" width="260" height="20" fill="#a9824e"/><g>${[55,110,165,220].map(x=>`<g transform="translate(${x} 70)"><ellipse cx="0" cy="6" rx="18" ry="6" fill="#fbf5e6"/><circle cx="-2" cy="4" r="3" fill="#b5462e"/><circle cx="4" cy="6" r="3" fill="#6c7330"/></g>`).join('')}</g></svg>`,
+  agri:`<svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="120" fill="#ecd9a6"/><circle cx="255" cy="26" r="15" fill="#fbe09a"/><path d="M0 50 Q150 36 300 50 V120 H0Z" fill="#7a8137"/><path d="M0 64 Q150 52 300 64 V120 H0Z" fill="#6c7330"/><g stroke="#55602a" stroke-width="2" opacity=".5" fill="none"><path d="M0 82 Q150 72 300 82"/><path d="M0 98 Q150 88 300 98"/></g><g>${[55,115,175,235].map(x=>`<g transform="translate(${x} 54)"><rect x="-1.5" y="4" width="4" height="14" fill="#7a5a32"/><circle r="10" fill="#57632a"/><circle cx="-7" cy="4" r="6" fill="#6c7330"/><circle cx="7" cy="4" r="6" fill="#6c7330"/></g>`).join('')}</g><rect x="24" y="104" width="252" height="12" fill="#a9824e"/><rect x="24" y="100" width="252" height="5" fill="#caa86a"/></svg>`,
+  hospital:`<svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="120" fill="#e6ecee"/><rect y="72" width="300" height="48" fill="#d3dee0"/><g transform="translate(34 28)"><rect x="-3" y="-9" width="6" height="18" fill="#b5462e"/><rect x="-9" y="-3" width="18" height="6" fill="#b5462e"/></g><rect x="68" y="62" width="164" height="46" rx="6" fill="#c2d0d2"/><rect x="74" y="66" width="152" height="38" rx="4" fill="#eef3f4"/><ellipse cx="128" cy="86" rx="27" ry="15" fill="#fff"/><ellipse cx="128" cy="85" rx="18" ry="10" fill="#e7eef0"/><ellipse cx="122" cy="84" rx="6" ry="4" fill="#6c7330"/><ellipse cx="135" cy="87" rx="6" ry="4" fill="#b5462e"/><rect x="184" y="74" width="13" height="24" rx="2" fill="#cfe6ea"/><rect x="208" y="74" width="2.5" height="26" fill="#9fb0b2"/><rect x="214" y="74" width="2.5" height="26" fill="#9fb0b2"/></svg>`,
+  festival:`<svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="120" fill="#3a2f4a"/><path d="M0 16 Q150 34 300 16" stroke="#8a7a5a" stroke-width="1" fill="none"/><g>${[20,55,90,125,160,195,230,265].map((x,i)=>`<circle cx="${x}" cy="${18+(i%2?6:0)}" r="3" fill="${['#ffd98a','#ff9a6a','#ffd98a','#b5e0e0'][i%4]}"/>`).join('')}</g><rect x="70" y="58" width="160" height="52" fill="#6b4a2e"/><rect x="62" y="46" width="176" height="14" fill="#b5462e"/><g>${[0,1,2,3,4,5].map(i=>`<rect x="${62+i*29.3}" y="46" width="14.6" height="14" fill="${i%2?'#fbf5e6':'#b5462e'}"/>`).join('')}</g><rect x="84" y="70" width="132" height="8" fill="#e9b54a"/><circle cx="110" cy="92" r="6" fill="#d99a3a"/><circle cx="150" cy="94" r="6" fill="#e9b54a"/><circle cx="190" cy="92" r="6" fill="#b5462e"/></svg>`,
+};
+
+/* ============ SVG FALLBACK ART ============ */
+function plate(inner){return `<svg class="dishsvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="54" rx="47" ry="44" fill="#d8c191"/><ellipse cx="50" cy="51" rx="47" ry="44" fill="#efe4cb"/><ellipse cx="50" cy="51" rx="38" ry="35" fill="#fbf6ea"/><ellipse cx="50" cy="51" rx="38" ry="35" fill="none" stroke="#e5d6b2" stroke-width="1.2"/>${inner}</svg>`;}
+function glass(c){return `<svg class="dishsvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M37 26 h26 l-4 50 h-18 z" fill="#dfeef0" opacity=".55" stroke="#a9c7cc" stroke-width="1.6"/><path d="M40 44 h20 l-3 30 h-14 z" fill="${c}"/><ellipse cx="50" cy="44" rx="10" ry="2.4" fill="#fff" opacity=".4"/></svg>`;}
+function gp(c1,c2){return plate(`<ellipse cx="50" cy="55" rx="19" ry="12" fill="${c1}"/><circle cx="43" cy="51" r="3.4" fill="${c2}"/><circle cx="57" cy="56" r="3.4" fill="${c2}"/><circle cx="50" cy="59" r="3.4" fill="${c2}"/><circle cx="51" cy="49" r="3" fill="${c2}"/>`);}
+const FOOD={
+  a1:`<g transform="translate(0 4)"><ellipse cx="40" cy="46" rx="19" ry="5.5" fill="#aebcc4" transform="rotate(-13 40 46)"/><ellipse cx="56" cy="56" rx="19" ry="5.5" fill="#c2ced4" transform="rotate(9 56 56)"/><circle cx="25" cy="42" r="1.6" fill="#33424a"/><circle cx="70" cy="40" r="7" fill="#f2cf4d"/><path d="M70 33 a7 7 0 0 1 0 14z" fill="#f7df80"/><circle cx="47" cy="65" r="2.4" fill="#5b7a35"/></g>`,
+  a2:`<g><ellipse cx="48" cy="51" rx="16" ry="13" fill="#fff"/><circle cx="36" cy="58" r="6" fill="#c0392b"/><circle cx="62" cy="56" r="6" fill="#b5462e"/><path d="M58 38 q6 -6 12 0 q-4 5 -6 9 q-4 -4 -6 -9z" fill="#5b7a35"/></g>`,
+  a3:`<g><path d="M30 56 q12 -10 24 -4 q-8 6 -20 8z" fill="#ef9a8a"/><path d="M40 50 q12 -10 24 -4 q-8 6 -20 8z" fill="#f2a999"/><path d="M50 44 q12 -10 24 -4 q-8 6 -20 8z" fill="#f4bdad"/><circle cx="60" cy="66" r="2" fill="#5b7a35"/></g>`,
+  a4:`<g><ellipse cx="50" cy="54" rx="20" ry="14" fill="#e9ddb6"/><circle cx="42" cy="50" r="2" fill="#c9a04a"/><circle cx="56" cy="56" r="2" fill="#c9a04a"/><path d="M48 40 q9 1 13 9 q-7 5 -13 4z" fill="#6c7330"/></g>`,
+  a5:`<g><path d="M30 56 q20 -26 40 0 q-20 8 -40 0z" fill="#d99a3a"/><path d="M30 56 q20 -18 40 0 q-20 5 -40 0z" fill="#e8b34e"/><circle cx="50" cy="52" r="2" fill="#c0392b" opacity=".5"/></g>`,
+  p1:`<g><ellipse cx="50" cy="55" rx="20" ry="14" fill="#57632a" opacity=".25"/><g fill="#f0e2c0">${[[40,50],[52,48],[46,57],[58,56],[50,62]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="4.4"/>`).join('')}</g><path d="M36 60 q8 -4 14 -1" stroke="#57632a" stroke-width="3" fill="none"/></g>`,
+  p2:`<g><path d="M34 56 q16 -18 32 0 q-16 8 -32 0z" fill="#d8c451"/><path d="M52 40 q10 4 12 14 q-9 0 -14 -8z" fill="#57632a"/></g>`,
+  p3:`<g><ellipse cx="48" cy="56" rx="19" ry="12" fill="#f3ecd4"/><g stroke="#6c7330" stroke-width="3" stroke-linecap="round"><path d="M40 52 l16 -16"/><path d="M46 54 l14 -12"/></g></g>`,
+  p4:`<g><g fill="none" stroke="#f0d99a" stroke-width="3" stroke-linecap="round"><path d="M34 58 q10 -10 22 -4"/><path d="M36 52 q12 -8 24 -2"/></g><path d="M58 40 q10 -4 14 4 q-6 6 -14 4z" fill="#b5462e"/><path d="M70 42 l8 -4 l-2 6z" fill="#9a2f1e"/></g>`,
+  p5:`<g><g fill="none" stroke="#f0d99a" stroke-width="3" stroke-linecap="round"><path d="M34 58 q10 -10 22 -4"/><path d="M36 52 q12 -8 24 -2"/><path d="M34 64 q12 -6 26 -3"/></g><circle cx="52" cy="52" r="6" fill="#c0392b"/><path d="M58 46 q3 -3 6 0" stroke="#5b7a35" stroke-width="2" fill="none"/></g>`,
+  s1:`<g><path d="M28 52 q24 -16 46 0 q-24 16 -46 0z" fill="#5a8c93"/><path d="M28 52 q24 -10 40 0 q-20 8 -40 0z" fill="#7aa9af"/><path d="M70 48 l10 -5 l0 12z" fill="#5a8c93"/><circle cx="36" cy="50" r="1.6" fill="#22343a"/></g>`,
+  s2:`<g><ellipse cx="50" cy="56" rx="21" ry="13" fill="#caa24a" opacity=".3"/><path d="M40 52 q7 -9 14 0 q-7 5 -14 0z" fill="#2b2540"/><path d="M52 56 q7 -9 14 0 q-7 5 -14 0z" fill="#2b2540"/><circle cx="52" cy="50" r="2.6" fill="#d9b25a"/><circle cx="44" cy="62" r="2.6" fill="#d9b25a"/></g>`,
+  s3:`<g><rect x="36" y="44" width="28" height="20" rx="3" fill="#c0455a"/><rect x="36" y="44" width="28" height="7" rx="3" fill="#d96b7d"/><circle cx="70" cy="48" r="2.4" fill="#6c7330"/></g>`,
+  s4:`<g><ellipse cx="48" cy="56" rx="16" ry="11" fill="#8a5a2b"/><ellipse cx="46" cy="52" rx="13" ry="8" fill="#a3713a"/><rect x="60" y="44" width="4" height="18" rx="2" fill="#efe4cb"/><circle cx="31" cy="48" r="2" fill="#6c7330"/></g>`,
+  s5:`<g><ellipse cx="50" cy="64" rx="20" ry="6" fill="#caa86a"/><path d="M30 56 q20 -14 40 0z" fill="#d99a4a"/><rect x="30" y="54" width="40" height="6" rx="3" fill="#7a4a26"/><path d="M30 50 q20 -8 40 0 q-2 5 -40 0z" fill="#5b7a35"/><path d="M30 44 q20 -14 40 0 q-20 7 -40 0z" fill="#e9b54a"/></g>`,
+  s6:`<g><rect x="34" y="46" width="32" height="16" rx="3" fill="#b5462e" opacity=".25"/><circle cx="40" cy="52" r="4" fill="#b5462e"/><circle cx="50" cy="52" r="4" fill="#6c7330"/><circle cx="60" cy="52" r="4" fill="#cc8a1f"/><circle cx="45" cy="58" r="4" fill="#7a3b6a"/><circle cx="55" cy="58" r="4" fill="#4f7a3f"/></g>`,
+  c1:`<g><path d="M40 64 q4 -26 10 -28 q-2 16 0 28z" fill="#57632a"/><path d="M48 64 q0 -26 4 -30 q2 16 2 30z" fill="#6c7330"/><path d="M52 64 q4 -24 12 -26 q-4 14 -6 26z" fill="#7a8137"/></g>`,
+  c2:`<g><path d="M34 56 l6 -14" stroke="#6c7330" stroke-width="5" stroke-linecap="round"/><circle cx="46" cy="54" r="5" fill="#b5462e"/><rect x="52" y="46" width="6" height="14" rx="3" fill="#cc8a1f"/><circle cx="64" cy="54" r="5" fill="#7a3b6a"/></g>`,
+  c3:`<g><g stroke="#e9b54a" stroke-width="4" stroke-linecap="round">${[[40,62,44,44],[46,64,50,44],[52,63,55,45],[58,62,60,46]].map(([x1,y1,x2,y2])=>`<path d="M${x1} ${y1} L${x2} ${y2}"/>`).join('')}</g><ellipse cx="50" cy="64" rx="16" ry="4" fill="#caa86a"/></g>`,
+  c4:`<g><circle cx="42" cy="54" r="9" fill="#c0392b"/><circle cx="58" cy="54" r="9" fill="#b5462e"/><path d="M42 45 q1 -3 3 -2" stroke="#5b7a35" stroke-width="2" fill="none"/><circle cx="42" cy="54" r="3.5" fill="#e9d8a0"/></g>`,
+  c5:`<g><path d="M38 58 q6 -12 12 -10 q-2 8 -6 12z" fill="#6c7330"/><path d="M50 58 q8 -10 14 -6 q-4 8 -10 10z" fill="#7a8137"/><circle cx="48" cy="54" r="3" fill="#b5462e"/></g>`,
+  d1:`<g><g fill="#6d3a6e">${[[44,50],[51,48],[47,55],[55,53],[50,58]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="4"/>`).join('')}</g><path d="M40 60 q18 8 30 -2" stroke="#7a4a26" stroke-width="2.5" fill="none" opacity=".6"/></g>`,
+  d2:`<g><path d="M36 60 L50 38 L64 60 Z" fill="#caa05a"/><path d="M36 60 L50 38 L57 49 L46 60 Z" fill="#d9b36a"/><circle cx="50" cy="34" r="5" fill="#6d3a6e"/><circle cx="46" cy="54" r="1.6" fill="#7a4a26"/></g>`,
+  d3:`<g><path d="M40 46 q8 -2 16 0 q-2 14 -8 18 q-6 -4 -8 -18z" fill="#c0392b"/><path d="M34 44 q12 -6 24 0 q-2 -6 -12 -7 q-9 1 -12 7z" fill="#fbf6ea"/><circle cx="36" cy="42" r="3" fill="#fbf6ea"/></g>`,
+  d4:`<g><path d="M38 60 L50 40 L62 60 Z" fill="#f0c64a"/><path d="M38 60 L50 40 L55 49 L47 60 Z" fill="#f7d670"/><rect x="38" y="58" width="24" height="6" fill="#caa05a"/></g>`,
+  d5:`<g><ellipse cx="50" cy="52" rx="17" ry="11" fill="#caa05a"/><ellipse cx="50" cy="50" rx="14" ry="8.5" fill="#e2c074"/><ellipse cx="50" cy="49" rx="7" ry="4" fill="#f3e6b0"/></g>`,
+};
+function dishArt(d){ if(d.drink) return glass(d.col); if(FOOD[d.id]) return plate(FOOD[d.id]); return gp(d.col||'#9aa45a', d.col2||'#fbf6ea'); }
+
+/* ============ DATA ============ */
+const DIMS=[
+  {k:'season',l:'Seasonality',c:'var(--olive)'},
+  {k:'local',l:'Short supply chain',c:'var(--terra)'},
+  {k:'sea',l:'Sea health',c:'var(--teal)'},
+  {k:'lowwaste',l:'Low waste',c:'var(--gold)'},
+  {k:'nutrition',l:'Nutrition',c:'var(--green)'},
+  {k:'afford',l:'Affordability',c:'var(--magenta)'},
+  {k:'heritage',l:'Heritage',c:'var(--brown)'},
+  {k:'story',l:'Territory story',c:'var(--blue)'},
+];
+const COURSES=['Antipasto','Primo','Secondo','Contorno','Dolce','Bevanda'];
+const D=(id,n,st,cost,v,extra={})=>({id,n,st,cost,...v,...extra});
+const DECK={
+  Antipasto:[
+    D('a1','Marinated Local Anchovies','Spring alici, cured the way the coast always has.',4,{season:5,local:5,sea:4,lowwaste:4,nutrition:4,heritage:5,story:5},{kw:'anchovies,seafood',lock:101}),
+    D('a2','Burrata & Sun-dried Tomatoes','Stracciatella from the next valley over.',6,{season:3,local:5,sea:null,lowwaste:3,nutrition:3,heritage:5,story:5},{kw:'burrata,cheese',lock:102,tags:['veg']}),
+    D('a3','Imported Smoked Salmon','Flown in, farmed far away — but it sells.',9,{season:2,local:0,sea:1,lowwaste:3,nutrition:4,heritage:1,story:1},{kw:'smoked,salmon',lock:103}),
+    D('a4','Quinoa & Avocado Bowl','On-trend superfoods from three continents.',7,{season:2,local:0,sea:null,lowwaste:3,nutrition:5,heritage:0,story:0},{kw:'quinoa,avocado',lock:104,tags:['veg']}),
+    D('a5','Fried Panzerotti','Street-corner classic, hot and irresistible.',3,{season:3,local:4,sea:null,lowwaste:3,nutrition:2,heritage:5,story:5},{kw:'panzerotti,fried',lock:105,tags:['kids'],col:'#d99a3a'}),
+  ],
+  Primo:[
+    D('p1','Orecchiette & Turnip Tops','Cime di rapa, the dish that defines this land.',3,{season:5,local:5,sea:null,lowwaste:5,nutrition:4,heritage:5,story:5},{kw:'orecchiette,pasta',lock:111,tags:['veg']}),
+    D('p2','Fava Bean & Chicory Purée','Fave e cicorie — peasant food, ancient and proud.',2,{season:4,local:5,sea:null,lowwaste:5,nutrition:5,heritage:5,story:5},{kw:'fava,beans',lock:112,tags:['veg','soft']}),
+    D('p3','Out-of-season Asparagus Risotto','Asparagus in November means a long, long journey.',7,{season:1,local:1,sea:null,lowwaste:3,nutrition:3,heritage:2,story:1},{kw:'asparagus,risotto',lock:113,tags:['veg','soft']}),
+    D('p4','Lobster Linguine','Luxury on the plate, pressure on the budget.',12,{season:3,local:2,sea:2,lowwaste:2,nutrition:3,heritage:2,story:2},{kw:'lobster,pasta',lock:114}),
+    D('p5','Tomato & Basil Spaghetti','Simple, sunny, and everyone clears the plate.',3,{season:3,local:4,sea:null,lowwaste:4,nutrition:3,heritage:4,story:3},{kw:'spaghetti,tomato',lock:115,tags:['veg','kids','soft']}),
+  ],
+  Secondo:[
+    D('s1','Grilled Mackerel','Sgombro: abundant, oily, gloriously underrated.',4,{season:4,local:4,sea:5,lowwaste:4,nutrition:5,heritage:3,story:4},{kw:'grilled,mackerel,fish',lock:121}),
+    D('s2','Mussel & Chickpea Stew','Cozze e ceci — farmed mussels, low impact, big flavour.',3,{season:4,local:5,sea:4,lowwaste:5,nutrition:5,heritage:5,story:5},{kw:'mussels,seafood',lock:122,tags:['soft']}),
+    D('s3','Bluefin Tuna Steak','A crowd-pleaser pulled from a strained fishery.',11,{season:3,local:3,sea:1,lowwaste:3,nutrition:4,heritage:3,story:3},{kw:'tuna,steak',lock:123}),
+    D('s4','Slow Lamb with Wild Herbs','Hillside flocks, rosemary from the verges.',8,{season:3,local:5,sea:null,lowwaste:4,nutrition:4,heritage:5,story:5},{kw:'roast,lamb',lock:124}),
+    D('s5','Imported Beef Burger','Familiar, easy — and heavy on the planet.',6,{season:3,local:0,sea:null,lowwaste:2,nutrition:2,heritage:0,story:0},{kw:'beef,burger',lock:125,tags:['kids']}),
+    D('s6','Chickpea & Vegetable Tian','A bright, slow-baked vegetable bake — fully plant-based.',3,{season:4,local:5,sea:null,lowwaste:5,nutrition:4,heritage:3,story:4},{kw:'vegetable,bake',lock:126,tags:['veg','soft'],col:'#b5462e'}),
+  ],
+  Contorno:[
+    D('c1','Wild Foraged Greens','Cicorielle pulled from the field edges this morning.',2,{season:4,local:5,sea:null,lowwaste:5,nutrition:4,heritage:5,story:5},{kw:'wild,greens,chicory',lock:131,tags:['veg'],col:'#57632a'}),
+    D('c2','Grilled Seasonal Vegetables','Whatever the garden is giving, over the coals.',3,{season:4,local:4,sea:null,lowwaste:4,nutrition:4,heritage:3,story:3},{kw:'grilled,vegetables',lock:132,tags:['veg'],col:'#6c7330'}),
+    D('c3','Imported French Fries','Frozen, fried, foolproof — and from nowhere in particular.',4,{season:3,local:0,sea:null,lowwaste:2,nutrition:1,heritage:0,story:0},{kw:'french,fries',lock:133,tags:['kids'],col:'#e9b54a'}),
+    D('c4','Rice-stuffed Tomatoes','Pomodori col riso, baked till they slump.',3,{season:4,local:4,sea:null,lowwaste:4,nutrition:3,heritage:4,story:4},{kw:'stuffed,tomatoes',lock:134,tags:['veg','soft'],col:'#c0392b'}),
+    D('c5','Out-of-season Greenhouse Salad','Pale lettuce trucked in under heated glass.',4,{season:1,local:2,sea:null,lowwaste:3,nutrition:3,heritage:1,story:1},{kw:'green,salad',lock:135,tags:['veg'],col:'#7a8137'}),
+  ],
+  Dolce:[
+    D('d1','Seasonal Fruit with Vincotto','Surplus fruit, grape-must syrup, zero waste.',2,{season:5,local:5,sea:null,lowwaste:5,nutrition:4,heritage:5,story:5},{kw:'fresh,fruit,dessert',lock:141,tags:['veg','soft']}),
+    D('d2','Fig & Almond Cake','Late-summer figs and orchard almonds.',3,{season:4,local:5,sea:null,lowwaste:4,nutrition:2,heritage:5,story:5},{kw:'fig,cake',lock:142,tags:['veg']}),
+    D('d3','Out-of-season Strawberries & Cream','Heated greenhouses, pale fruit, big footprint.',6,{season:1,local:1,sea:null,lowwaste:2,nutrition:2,heritage:2,story:1},{kw:'strawberries,cream',lock:143,tags:['veg','soft']}),
+    D('d4','Imported Mango Cheesecake','Tropical and tempting, from very far away.',7,{season:1,local:0,sea:null,lowwaste:2,nutrition:1,heritage:0,story:0},{kw:'cheesecake',lock:144,tags:['veg','kids','soft']}),
+    D('d5','Almond Pasticciotto','The pastry every nonna argues she makes best.',3,{season:3,local:4,sea:null,lowwaste:3,nutrition:2,heritage:5,story:5},{kw:'pastry,custard',lock:145,tags:['kids','soft'],col:'#caa05a'}),
+  ],
+  Bevanda:[
+    D('b1','Local Primitivo Wine','A glass of the hills, poured with pride.',4,{season:3,local:5,sea:null,lowwaste:4,nutrition:1,heritage:5,story:5},{kw:'red,wine,glass',lock:151,tags:['adult'],drink:true,col:'#7a1f3a'}),
+    D('b2','Tap Water with Lemon','Free, local, and quietly the right choice.',0,{season:4,local:5,sea:null,lowwaste:5,nutrition:3,heritage:2,story:2},{kw:'water,lemon,glass',lock:152,tags:['veg','kids','soft'],drink:true,col:'#cfe6ea'}),
+    D('b3','Imported Cola','Fizzy, familiar, and shipped halfway round the world.',3,{season:3,local:0,sea:null,lowwaste:2,nutrition:0,heritage:0,story:0},{kw:'cola,soda,glass',lock:153,tags:['kids'],drink:true,col:'#3a2418'}),
+    D('b4','Almond Milk (latte di mandorla)','A Salento summer in a glass.',3,{season:3,local:5,sea:null,lowwaste:4,nutrition:3,heritage:5,story:5},{kw:'almond,milk,glass',lock:154,tags:['veg','kids','soft'],drink:true,col:'#f3ead6'}),
+    D('b5','Imported Bottled Orange Juice','From concentrate, from somewhere, in plastic.',3,{season:2,local:1,sea:null,lowwaste:2,nutrition:2,heritage:1,story:1},{kw:'orange,juice,glass',lock:155,tags:['kids'],drink:true,col:'#e89a2a'}),
+  ],
+};
+const VISIONS={
+  resilient:{n:'Resilient Local Foodweb',tip:'A 2040 where the region feeds itself in loops.',boost:{local:1.5,season:1.4,lowwaste:1.4}},
+  heritage:{n:'Heritage Renaissance',tip:'A 2040 where tradition is living, not museum-frozen.',boost:{heritage:1.5,story:1.5,season:1.2}},
+  equitable:{n:'Equitable Plenty',tip:'A 2040 where good food reaches every table.',boost:{afford:1.5,nutrition:1.4,local:1.2}},
+};
+const BRIEFS={
+  blue:{src:'AdriEATic',n:'The Blue Table',place:'A coastal trattoria on the Adriatic',
+    desc:'Peak August. Tourists want tuna and lobster; the fishery wants a rest. Fill tables without emptying the sea.',
+    briefing:'It is the second week of August and every table is booked. Quotas on bluefin and lobster have tightened this year, and a young fisher down the quay keeps offering you whatever the day actually landed. Your menu decides whether the Adriatic still has fish to sell in 2040.',
+    budget:36,vision:'resilient',
+    weights:{season:1,local:1.4,sea:2,lowwaste:1,nutrition:1,afford:1,heritage:1,story:1.4},
+    kw:'seafood,restaurant,coast',lock:201,rules:{forbid:[]}},
+  canteen:{src:'GourmetPast',n:'The Heritage Canteen',place:'A primary-school canteen in inland Puglia',
+    desc:'A tight per-child budget and 200 hungry kids — and one chance to teach a generation what their land tastes like.',
+    briefing:'The town pays a fixed amount per child and not a cent more. The kids will happily eat fries and cola and leave the rest. Your job: stay under budget, keep them nourished, get them to actually clean their plates, and slip the flavours of their own territory back onto the tray. No alcohol on school grounds.',
+    budget:16,vision:'heritage',
+    weights:{season:1.2,local:1,sea:1,lowwaste:1,nutrition:1.5,afford:2,heritage:1.6,story:1.4},
+    kw:'school,canteen,lunch',lock:202,rules:{forbid:['adult'],need:{tag:'kids',label:'a kid-approved dish'},minDim:{nutrition:55}}},
+  feast:{src:'Our Food Our Future',n:'The Future Feast',place:'An EU foresight summit dinner',
+    desc:'200 delegates from across Europe. The menu is the manifesto — and the press will write it up.',
+    briefing:'Tonight the menu is an argument. Delegates, journalists and a few sceptical ministers will eat what you serve and then debate whether a sustainable food system can scale. A vegan delegation has confirmed. The story of the plate matters as much as the plate.',
+    budget:32,vision:'equitable',
+    weights:{season:1.2,local:1.3,sea:1,lowwaste:1.8,nutrition:1.4,afford:1.2,heritage:1,story:1.4},
+    kw:'banquet,dinner,table',lock:203,rules:{need:{tag:'veg',course:'Secondo',label:'a plant-based main course'}}},
+  agri:{src:'GourmetPast',n:'The Agriturismo Harvest',place:'A farm-stay dinner among the olive groves',
+    desc:'City guests want "authentic." You have your own fields, your own surplus, and a story to tell.',
+    briefing:'Your guests drove out of the city to eat something real. Almost everything you need grows within sight of the table — so anything imported will stick out, and any surplus from the harvest left to rot is money and meaning lost. Tell them where every dish comes from.',
+    budget:28,vision:'heritage',
+    weights:{season:1.4,local:1.8,sea:.6,lowwaste:1.4,nutrition:1,afford:1,heritage:1.5,story:1.8},
+    kw:'farm,table,rustic,dinner',lock:204,rules:{}},
+  hospital:{src:'Our Food Our Future',n:'The Care Kitchen',place:'A public hospital & elderly-care kitchen',
+    desc:'Tight budget, fragile diners, nutrition that genuinely matters. Comfort and care on every tray.',
+    briefing:'Many of your diners are recovering or elderly. Meals must be nourishing and easy to eat, the budget is public money, and there is no place for alcohol or anything hard to chew. Done well, even hospital food can taste of home.',
+    budget:20,vision:'equitable',
+    weights:{season:1,local:1.1,sea:1,lowwaste:1.2,nutrition:2,afford:1.6,heritage:1,story:1},
+    kw:'hospital,meal,tray,healthy',lock:205,rules:{forbid:['adult'],minSoft:3,minDim:{nutrition:65}}},
+  festival:{src:'AdriEATic',n:'The Sagra Stall',place:'A street-food stall at the town festival',
+    desc:'High volume, low price, fast — and a sneaky chance to make sustainable food the crowd favourite.',
+    briefing:'Thousands will file past your stall tonight. They want it cheap, hot and quick, and they will vote with their feet. Hit that brief and you can still make the sustainable, local option the one everyone is queuing for.',
+    budget:15,vision:'resilient',
+    weights:{season:1.1,local:1.3,sea:1.2,lowwaste:1.2,nutrition:1,afford:1.8,heritage:1.3,story:1.2},
+    kw:'street,food,festival',lock:206,rules:{need:{tag:'kids',label:'a crowd-pleaser'}}},
+};
+const PRINCIPLES={
+  season:{p:"Nature's Wisdom",t:'Let the calendar lead. Out-of-season produce travels far and arrives tired — follow what the land offers now.'},
+  local:{p:'Community Strength',t:'Long supply chains drain value out of the territory. Shorten them and the money — and the trust — stays home.'},
+  sea:{p:'Stewardship Legacy',t:'A fishery is borrowed from the next generation. Lean on abundant species and let the strained ones recover.'},
+  lowwaste:{p:'Mindful Approach',t:'Waste is a design flaw, not a fact of life. Whole-ingredient dishes and surplus-fruit puddings close the loop.'},
+  nutrition:{p:'Balancing Act',t:'Sustainability without nourishment is half a menu. Balance plant proteins, oily fish and real vegetables.'},
+  afford:{p:'Empathy Cultivation',t:'A menu only counts if people can actually eat it. Price for the table you are really serving.'},
+  heritage:{p:'Diversity Appreciation',t:'Traditional dishes carry knowledge as well as flavour. Reviving them protects a living culinary diversity.'},
+  story:{p:'Valuing Connections',t:'Diners buy the story of a place as much as the plate. Name the producers, the valleys, the seasons.'},
+};
+/* dynamic service events */
+const EVENTS=[
+  {id:'coach',sc:['blue','agri','festival','feast'],title:'A coach of 50 arrives',
+   cond:s=>s.afford>=60,hit:['You kept affordable dishes ready — you fed the crowd and still made a margin.',6],
+   miss:['Your few cheap dishes sold out in minutes; the pricey rest sat cold.',-6]},
+  {id:'heat',sc:['blue','canteen','feast','agri','hospital','festival'],title:'A heatwave hits the harvest',
+   cond:s=>s.season>=65,hit:['Your seasonal menu barely noticed — everything was local and in season anyway.',5],
+   miss:['Half your out-of-season produce never arrived. Improvise.',-5]},
+  {id:'sardine',sc:['blue','festival','agri','canteen'],title:'A surplus sardine catch is offered',
+   cond:s=>s.hasSea&&s.sea>=70,hit:['The fisher trusted you with the surplus — your sustainable-seafood story paid off.',6],
+   miss:['You had already committed elsewhere and let the cheap, sustainable catch go by.',-3]},
+  {id:'vegan',sc:['feast','festival','agri','blue'],title:'A vegan delegation sits down',
+   cond:s=>s.hasVeg,hit:['Your plant-based option meant nobody went hungry.',6],
+   miss:['No real plant-based main — a quarter of the table ate bread and salad.',-6]},
+  {id:'inspect',sc:['blue','canteen','feast','agri','hospital','festival'],title:'A health inspector audits the bins',
+   cond:s=>s.lowwaste>=70,hit:['Spotless. Your whole-ingredient cooking impressed the inspector.',5],
+   miss:['Bins full of trimmings and waste — a formal warning is issued.',-5]},
+  {id:'press',sc:['feast','blue','agri'],title:'The local press reviews your menu',
+   cond:s=>s.story>=70,hit:['The review led with your territory story. Bookings doubled overnight.',6],
+   miss:['The review called the food "anonymous" — nobody could tell where it was from.',-4]},
+  {id:'freeze',sc:['canteen','hospital','festival'],title:'A mid-year budget freeze is announced',
+   cond:s=>s.afford>=65,hit:['You were already lean — the freeze never touched you.',5],
+   miss:['You were right at the ceiling; the freeze forces painful cuts.',-6]},
+  {id:'kids',sc:['canteen','festival'],title:'The crowd delivers its verdict',
+   cond:s=>s.hasKids,hit:['Trays came back clean. They actually ate it.',5],
+   miss:['Trays came back full — the appealing dishes simply were not there.',-5]},
+  {id:'nutri',sc:['hospital','canteen'],title:'The dietitian reviews the trays',
+   cond:s=>s.nutrition>=68,hit:['Balanced and nourishing — exactly what these diners needed.',5],
+   miss:['Flagged as nutritionally thin for the people you are feeding.',-6]},
+  {id:'coop',sc:['agri','feast','blue'],title:'A local olive-oil co-op comes calling',
+   cond:s=>s.local>=75,hit:['A producers\' co-op wants to feature your menu across the region.',5],
+   miss:['They looked for local sourcing to partner on — and quietly moved on.',-3]},
+];
+
+/* ============ STATE ============ */
+let state={screen:'intro',brief:null,vision:null,picks:{},events:[],final:0};
+let career={rounds:0,sum:0,best:0};
+const app=document.getElementById('app');
+function allowed(course){const f=(BRIEFS[state.brief].rules.forbid)||[];return DECK[course].filter(d=>!(d.tags||[]).some(t=>f.includes(t)));}
+function chosenDishes(){return COURSES.filter(c=>state.picks[c]).map(c=>DECK[c].find(d=>d.id===state.picks[c]));}
+
+/* ============ SCORING ============ */
+function computeScores(){
+  const b=BRIEFS[state.brief];const dishes=chosenDishes();const n=dishes.length||1;const scores={};
+  ['season','local','lowwaste','nutrition','heritage','story'].forEach(k=>{scores[k]=Math.round((dishes.reduce((a,d)=>a+(d[k]||0),0)/n)/5*100);});
+  const seaD=dishes.filter(d=>d.sea!==null&&d.sea!==undefined);
+  scores.sea=seaD.length?Math.round(seaD.reduce((a,d)=>a+d.sea,0)/seaD.length/5*100):100;
+  const totalCost=dishes.reduce((a,d)=>a+d.cost,0);
+  scores.afford=Math.max(0,Math.min(100,Math.round(130-totalCost*2.3)));
+  const w={...b.weights};if(state.vision){const bo=VISIONS[state.vision].boost;for(const k in bo)w[k]=(w[k]||1)*bo[k];}
+  let ws=0,t=0;DIMS.forEach(d=>{const wt=w[d.k]||1;ws+=wt;t+=scores[d.k]*wt;});
+  return {scores,overall:Math.round(t/ws),totalCost,dishes};
+}
+function menuFlags(){const ds=chosenDishes();return{hasVeg:ds.some(d=>d.id[0]==='s'&&(d.tags||[]).includes('veg')),hasKids:ds.some(d=>!d.drink&&(d.tags||[]).includes('kids')),hasSea:ds.some(d=>d.sea!==null&&d.sea!==undefined)};}
+function pips(d){return `<div class="pips">${DIMS.map(dim=>{let v=dim.k==='afford'?Math.max(0,Math.min(5,Math.round((130-d.cost*2.3)/22))):(d[dim.k]==null?0:d[dim.k]);const h=v/5*100;return `<div class="pip" title="${dim.l}"><i style="height:${h}%;background:${dim.c};opacity:${0.4+h/200}"></i></div>`;}).join('')}</div>`;}
+
+/* ============ SCREENS ============ */
+function renderCareer(){
+  const c=document.getElementById('career');
+  if(career.rounds===0){c.innerHTML='';return;}
+  const avg=Math.round(career.sum/career.rounds);
+  c.innerHTML=`<span>Career · <b>${career.rounds}</b> service${career.rounds>1?'s':''} run</span><span>Average score <b>${avg}</b></span><span>Best <b>${career.best}</b></span>`;
+}
+function renderIntro(){
+  app.innerHTML=`<div class="intro-card up">
+    <p>You are a young chef-planner in the Mediterranean. The food system you inherit is straining — overfished seas, fruit flown across oceans, traditions slipping off the tray. Your tool for changing it is small but powerful: <span class="hl">the menu</span>.</p>
+    <p>Across <b>six real settings</b> — a tourist trattoria, a school canteen, an EU summit, a farm stay, a care kitchen and a festival stall — you'll design menus and live with the consequences. This uses the <b>Three Horizons</b> way of seeing change, so you cook <em>toward a future</em>, not just for tonight:</p>
+    <div class="horizons">
+      <div class="horizon"><b>H1 · Today</b><span>Business as usual, slipping out of fit.</span></div>
+      <div class="horizon"><b>H3 · 2040</b><span>The food system you actually want.</span></div>
+      <div class="horizon"><b>H2 · The menu</b><span>The bridge you build, one dish at a time.</span></div>
+    </div>
+    <p>Pick a 2040 vision, then build a six-course menu under budget. Every dish is scored across eight dimensions:</p>
+    <div class="dimgrid">${DIMS.map(d=>`<div class="dimtag"><span class="dot" style="background:${d.c}"></span>${d.l}</div>`).join('')}</div>
+    <p style="margin-top:14px">Then <b>service begins</b> — heatwaves, tourist coaches, surprise vegans and health inspectors test whether your menu holds up in the real world.</p>
+    <div class="center" style="margin-top:22px;"><button class="btn" onclick="go('brief')">Enter the kitchen →</button></div>
+  </div>`;
+}
+function renderBriefSelect(){
+  app.innerHTML=`<h2 class="sec-head up">Choose tonight's service</h2>
+  <p class="sec-sub up">Six settings, six worlds. Each weights the eight dimensions its own way and brings its own real-world pressures.</p>
+  <div class="brief-grid">
+    ${Object.entries(BRIEFS).map(([k,b],i)=>`<div class="brief up" style="animation-delay:${i*0.06}s" onclick="pickBrief('${k}')">
+      ${photoBlock(k,SCENE[k])}
+      <div class="body"><span class="src">${b.src}</span><h3>${b.n}</h3><p class="place">${b.place}</p><p>${b.desc}</p>
+      <div class="meta"><span>Budget €${b.budget}</span><span>6 courses</span></div></div></div>`).join('')}
+  </div>`;
+}
+function renderBuild(){
+  const b=BRIEFS[state.brief];
+  const rulesTags=[];
+  if(b.rules.forbid&&b.rules.forbid.includes('adult')) rulesTags.push('No alcohol');
+  if(b.rules.need) rulesTags.push('Must include '+b.rules.need.label);
+  if(b.rules.minSoft) rulesTags.push('≥'+b.rules.minSoft+' easy-to-eat dishes');
+  if(b.rules.minDim){for(const k in b.rules.minDim){rulesTags.push('Min '+DIMS.find(d=>d.k===k).l.toLowerCase()+' '+b.rules.minDim[k]);}}
+  rulesTags.push('Budget €'+b.budget);
+  const layoutCards=COURSES.map(course=>`<div class="course"><div class="course-label">${course}</div><div class="cards">
+    ${allowed(course).map(d=>{const sel=state.picks[course]===d.id;return `<div class="dish ${sel?'sel':''}" onclick="pick('${course}','${d.id}')">
+      ${sel?'<span class="sel-flag">on the menu</span>':''}
+      <div class="tags">${(d.tags||[]).map(t=>`<span class="tag t-${t}">${t==='veg'?'plant':t==='kids'?'crowd':t}</span>`).join('')}</div>
+      ${photoBlock(d.id,dishArt(d))}
+      <div class="pad"><div class="dn">${d.n}</div><div class="story">${d.st}</div><div class="cost">${d.cost===0?'free':'€'+d.cost}</div>${pips(d)}</div>
+    </div>`;}).join('')}</div></div>`).join('');
+  app.innerHTML=`<div class="build-top"><div><h2 class="sec-head">${b.n}</h2><p class="sec-sub" style="margin:0">${b.place} · ${b.src}</p></div><button class="btn ghost" onclick="go('brief')">← change service</button></div>
+    <div class="briefing"><b>The brief.</b> ${b.briefing}<div class="rules">${rulesTags.map(r=>`<span class="rule">${r}</span>`).join('')}</div></div>
+    <div class="vlabel">Your 2040 vision <span style="font-weight:400;color:var(--ink-soft)">— this tilts how the menu is judged (backcasting):</span></div>
+    <div class="vision-pick">${Object.entries(VISIONS).map(([k,v])=>`<div class="vchip ${state.vision===k?'on':''}" onclick="setVision('${k}')" title="${v.tip}">${v.n}</div>`).join('')}</div>
+    <div class="layout"><div>${layoutCards}</div><div class="board" id="board"></div></div>`;
+  renderBoard();
+}
+function renderBoard(){
+  const b=BRIEFS[state.brief];const{scores,overall,totalCost}=computeScores();
+  const courses=COURSES.length;const filled=COURSES.filter(c=>state.picks[c]).length;const over=totalCost>b.budget;
+  // unmet rule check
+  let unmet=[];const ds=chosenDishes();
+  if(b.rules.need&&filled===courses){
+    const nd=b.rules.need; let sat;
+    if(nd.course){const cd=DECK[nd.course].find(x=>x.id===state.picks[nd.course]);sat=cd&&!cd.drink&&(cd.tags||[]).includes(nd.tag);}
+    else {sat=ds.some(d=>!d.drink&&(d.tags||[]).includes(nd.tag));}
+    if(!sat) unmet.push('needs '+nd.label);
+  }
+  if(b.rules.minSoft&&filled===courses){
+    const softCount=ds.filter(d=>!d.drink&&(d.tags||[]).includes('soft')).length;
+    if(softCount<b.rules.minSoft) unmet.push('needs '+b.rules.minSoft+' easy-to-eat dishes');
+  }
+  if(b.rules.minDim){for(const k in b.rules.minDim){if(filled===courses&&scores[k]<b.rules.minDim[k]) unmet.push(DIMS.find(d=>d.k===k).l.toLowerCase()+' too low');}}
+  const ready=filled===courses&&!over&&unmet.length===0;
+  const board=document.getElementById('board');if(!board)return;
+  board.innerHTML=`<h4>Live foodscape</h4>
+    <p class="hint">${filled}/${courses} courses${over?' · <span style="color:var(--terra)">over budget</span>':''}${unmet.length?' · <span style="color:var(--terra)">'+unmet[0]+'</span>':''}</p>
+    <div class="budget"><div class="budget-row"><span>Budget</span><span style="color:${over?'var(--terra)':'var(--ink)'}">€${totalCost} / €${b.budget}</span></div>
+    <div class="budbar ${over?'over':''}"><i style="width:${Math.min(100,totalCost/b.budget*100)}%"></i></div></div>
+    ${DIMS.map(d=>`<div class="meter"><div class="meter-row"><b>${d.l}</b><span>${scores[d.k]}</span></div><div class="bar"><i style="width:${scores[d.k]}%;background:${d.c}"></i></div></div>`).join('')}
+    <div class="total"><div class="num">${filled?overall:'—'}</div><div class="lbl">Foodscape score</div></div>
+    <div class="center" style="margin-top:14px;"><button class="btn sm" ${ready?'':'disabled'} onclick="serve()">${over?'Trim the budget':unmet.length?'Meet the rules':filled<courses?'Fill every course':'Open for service →'}</button></div>`;
+}
+function serve(){
+  const{scores,overall}=computeScores();const flags=menuFlags();
+  const s={...scores,hasVeg:flags.hasVeg,hasKids:flags.hasKids,hasSea:flags.hasSea};
+  // pick up to 2 applicable events
+  const pool=EVENTS.filter(e=>e.sc.includes(state.brief));
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  const chosen=pool.slice(0,2);
+  let delta=0;state.events=chosen.map(e=>{const ok=e.cond(s);const[txt,d]=ok?e.hit:e.miss;delta+=d;return{title:e.title,txt,d,good:ok};});
+  // scenario rule bonus for meeting 'need' nicely already enforced; small bonus for vision alignment handled in weights
+  state.final=Math.max(0,Math.min(100,overall+delta));
+  career.rounds++;career.sum+=state.final;career.best=Math.max(career.best,state.final);
+  go('result');
+}
+function renderResult(){
+  const b=BRIEFS[state.brief];const{scores,overall}=computeScores();const final=state.final;
+  let rank,blurb;
+  if(final>=82){rank='Foodscape Steward';blurb='A menu the next generation could inherit with gratitude.';}
+  else if(final>=66){rank='Territory Builder';blurb='A confident step toward your 2040 — with room to push further.';}
+  else if(final>=50){rank='Apprentice Forager';blurb='The instinct is there; the trade-offs got the better of you.';}
+  else {rank='Back to the Drawing Board';blurb='This menu pulls the territory the wrong way. Re-think and re-cook.';}
+  const ranked=DIMS.map(d=>({...d,v:scores[d.k]})).sort((a,c)=>a.v-c.v);
+  const weak=ranked[0],strong=ranked[ranked.length-1];const wp=PRINCIPLES[weak.k],sp=PRINCIPLES[strong.k];
+  const recap=COURSES.map(c=>{const d=DECK[c].find(x=>x.id===state.picks[c]);return `<div><div class="mini">${photoBlock(d.id,dishArt(d))}</div><span class="c">${c}</span><span class="nm">${d.n}</span><span class="pr">${d.cost===0?'free':'€'+d.cost}</span></div>`;}).join('');
+  const eventsHtml=state.events.map(e=>`<div class="event ${e.good?'':'bad'}"><div class="ico">${e.good?'✓':'!'}</div><div><h6>${e.title}</h6><p>${e.txt}</p></div><span class="delta" style="color:${e.good?'var(--green)':'var(--terra)'}">${e.d>0?'+':''}${e.d}</span></div>`).join('');
+  app.innerHTML=`<div class="result up">
+    <div class="verdict"><div class="ph" style="height:140px">${SCENE[state.brief]}<img class="photo" loading="lazy" src="${imgSrc(state.brief)}" onload="this.classList.add('ok')" onerror="this.remove()"><div class="shade" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,85,96,.1),rgba(43,33,23,.5))"></div></div>
+      <div class="pad">
+        <p class="kicker" style="color:var(--terra);text-shadow:none;margin-top:14px">${b.n} · steering toward ${VISIONS[state.vision].n}</p>
+        <div class="big">${final}<span class="of"> / 100</span></div>
+        <div class="rank">${rank}</div>
+        <p style="font-style:italic;max-width:480px;margin:8px auto 0;color:var(--ink-soft)">${blurb}</p>
+        <p class="breakdown">Menu design ${overall} ${final-overall>=0?'+':'−'} ${Math.abs(final-overall)} from how service went</p>
+      </div></div>
+    <h3 style="font-family:'Fraunces',serif;margin:24px 0 6px">Service report</h3>
+    <div class="events">${eventsHtml}</div>
+    <div class="res-grid">
+      <div class="res-block"><div class="pl">Your strength · ${sp.p}</div><h5>${strong.l} — ${strong.v}/100</h5><p>${sp.t}</p></div>
+      <div class="res-block weak"><div class="pl">Work on this · ${wp.p}</div><h5>${weak.l} — ${weak.v}/100</h5><p>${wp.t}</p></div>
+    </div>
+    <h3 style="font-family:'Fraunces',serif;margin:18px 0 4px">Tonight's menu</h3>
+    <div class="menu-recap">${recap}</div>
+    <div class="center" style="margin-top:14px;"><button class="btn" onclick="replaySame()">Re-cook this service</button> <button class="btn ghost" onclick="replayNew()">Try another setting →</button></div>
+  </div>`;
+}
+
+/* ============ ACTIONS ============ */
+function go(s){state.screen=s;render();renderCareer();window.scrollTo({top:0,behavior:'smooth'});}
+function pickBrief(k){state.brief=k;state.vision=BRIEFS[k].vision;state.picks={};state.events=[];go('build');}
+function setVision(k){state.vision=k;renderBuild();}
+function pick(c,id){state.picks[c]=(state.picks[c]===id)?undefined:id;if(state.picks[c]===undefined)delete state.picks[c];renderBuild();}
+function replaySame(){state.picks={};state.events=[];go('build');}
+function replayNew(){state.brief=null;state.vision=null;state.picks={};state.events=[];go('brief');}
+function render(){({intro:renderIntro,brief:renderBriefSelect,build:renderBuild,result:renderResult}[state.screen])();}
+
+document.getElementById('hero').innerHTML=photoBlock('hero',HERO_SVG)+
+  `<div class="shade"></div><div class="hero-text"><p class="kicker">A Serious Game on Sustainable Food Systems</p><h1 class="title">Mediterranean <em>Foodscape</em></h1><p class="subtitle">Six services. One question: can the menu steer your territory toward the food system of 2040?</p></div>`;
+render();renderCareer();renderCredits();
+</script>
+</body>
+</html>
